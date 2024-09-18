@@ -1,10 +1,12 @@
 package com.example.activityefragments
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,6 +16,7 @@ class DetalhesActivity : AppCompatActivity() {
     lateinit var buttonFechar: Button
     lateinit var textFilme: TextView
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i("ciclo_vida", "onCreate")
@@ -29,10 +32,19 @@ class DetalhesActivity : AppCompatActivity() {
         textFilme = findViewById(R.id.textFilme)
 
         val bundle = intent.extras //contém todos os parametros da outra tela
-        val serie = bundle?.getString("série")
-        val classificacao = bundle?.getInt("classificação")
-        val total = "$serie - $classificacao"
-        textFilme.text = total
+//        val serie = bundle?.getString("série")
+//        val classificacao = bundle?.getInt("classificação")
+//        val total = "$serie - $classificacao"
+//        textFilme.text = total
+
+        val filme = if(Build.VERSION.SDK_INT >= 33) { //versão >= 33
+            bundle?.getSerializable("filme", Filme::class.java)
+        }else{
+            bundle?.getSerializable("filme") as Filme
+        }
+
+        //textFilme.text = "$filme"
+        textFilme.text = "${filme?.nome} - ${filme?.descricao}"
 
         buttonFechar.setOnClickListener {
             finish()

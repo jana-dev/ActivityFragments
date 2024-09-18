@@ -33,8 +33,19 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, DetalhesActivity::class.java)
 
             //Passar parametros para a outra tela
-            intent.putExtra("série", "Game of Thrones")
-            intent.putExtra("classificação", 5)
+            //intent.putExtra("série", "Game of Thrones")
+            //intent.putExtra("classificação", 5)
+
+            //Como passar objetos de uma tela para outra
+            val filme = Filme(
+                "Interestelar",
+                "Filme de ficção científica",
+                4.9,
+                "Christopher Nolan",
+                "Paramount Pictures"
+            )
+            //No data class foi necessário colocar um : Serializable no final da classe, se não o putExtra não aceita
+            intent.putExtra("filme", filme)
 
             startActivity(intent)
         }
